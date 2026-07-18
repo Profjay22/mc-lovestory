@@ -15,6 +15,7 @@ import MusicToggle from "./components/MusicToggle";
 
 export default function App() {
   const [opened, setOpened] = useState(false);
+  const [dateRevealed, setDateRevealed] = useState(false);
 
   // Lock scrolling until the invitation is opened.
   useEffect(() => {
@@ -28,8 +29,8 @@ export default function App() {
 
       <main className={`site ${opened ? "revealed" : ""}`}>
         <Hero />
-        <ScratchReveal />
-        <Countdown />
+        <ScratchReveal onReveal={() => setDateRevealed(true)} />
+        <Countdown revealed={dateRevealed} />
         <Story />
         <Families />
         <Details />

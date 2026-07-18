@@ -15,14 +15,18 @@ function diff(target) {
   };
 }
 
-export default function Countdown() {
+export default function Countdown({ revealed }) {
   const target = new Date(couple.weddingISO).getTime();
   const [t, setT] = useState(() => diff(target));
 
   useEffect(() => {
+    if (!revealed) return;
     const id = setInterval(() => setT(diff(target)), 1000);
     return () => clearInterval(id);
-  }, [target]);
+  }, [target, revealed]);
+
+  // Stays hidden until the guest scratches the card to reveal the date.
+  if (!revealed) return null;
 
   const units = [
     { label: "Days", value: t.days },
@@ -32,7 +36,7 @@ export default function Countdown() {
   ];
 
   return (
-    <section className="countdown" aria-label="Countdown to the wedding">
+    <section className="countdown count-enter" id="countdown" aria-label="Countdown to the wedding">
       <Reveal className="count-wrap">
         <p className="section-eyebrow">Counting down to forever</p>
         <Flourish className="ink-flourish" />

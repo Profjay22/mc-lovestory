@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { couple } from "../config";
+import { fireConfetti } from "../confetti";
 import Reveal from "./Reveal";
 import { Flourish } from "./Icons";
 
 // A foil "scratch-to-reveal" card, like the one in the reel.
 // The date sits underneath; a champagne-gold coating on a <canvas> is
-// erased as the guest drags across it. Past ~55% cleared, it fades away.
-export default function ScratchReveal() {
+// erased as the guest drags across it. Past ~55% cleared, it fades away,
+// a confetti burst fires, and the countdown below is unlocked.
+export default function ScratchReveal({ onReveal }) {
   const canvasRef = useRef(null);
   const wrapRef = useRef(null);
   const drawing = useRef(false);
@@ -68,6 +70,21 @@ export default function ScratchReveal() {
     return () => window.removeEventListener("resize", onResize);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // When the card reveals: unlock the countdown, celebrate, and glide down.
+  useEffect(() => {
+    if (!revealed) return;
+    onReveal?.();
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+    const box = wrapRef.current?.getBoundingClientRect();
+    fireConfetti(box ? { x: box.left + box.width / 2, y: box.top + box.height / 2 } : undefined);
+    const t = setTimeout(() => {
+      document.querySelector("#countdown")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 1200);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [revealed]);
 
   function pointFromEvent(e) {
     const rect = canvasRef.current.getBoundingClientRect();
