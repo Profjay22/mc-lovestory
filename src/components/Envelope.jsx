@@ -11,9 +11,10 @@ export default function Envelope({ onOpen }) {
   function open() {
     if (opening) return;
     setOpening(true);
+    // Reveal/unlock the site behind the overlay now; the envelope keeps
+    // animating on top and removes itself once the flap has opened.
     onOpen?.();
-    // Remove from the DOM after the animation completes.
-    setTimeout(() => setGone(true), 1500);
+    setTimeout(() => setGone(true), 2300);
   }
 
   if (gone) return null;
@@ -32,7 +33,7 @@ export default function Envelope({ onOpen }) {
               {couple.groom.short}
             </h1>
             <p className="env-invite">request the pleasure of your company</p>
-            <p className="env-date">{couple.dateShort}</p>
+            <p className="env-date">{couple.hashtag}</p>
           </div>
         </div>
 

@@ -108,7 +108,8 @@ a { color: inherit; text-decoration: none; }
     radial-gradient(circle at 30% 20%, rgba(230, 211, 169, 0.35), transparent 55%),
     radial-gradient(circle at 75% 80%, rgba(201, 139, 148, 0.3), transparent 55%),
     linear-gradient(160deg, var(--cream), var(--cream-2));
-  transition: opacity 1.1s ease, visibility 1.1s ease;
+  /* the overlay only fades AFTER the flap opens and the card rises */
+  transition: opacity 0.8s ease 1.25s, visibility 0s linear 2.05s;
   padding: 1.5rem;
 }
 .envelope-overlay.is-opening { opacity: 0; visibility: hidden; }
@@ -129,9 +130,10 @@ a { color: inherit; text-decoration: none; }
   border: 1px solid rgba(177, 142, 90, 0.35);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center; padding: 2rem 1.4rem; gap: 0.4rem;
-  transition: transform 1.2s cubic-bezier(0.6, 0, 0.2, 1);
+  /* wait for the flap to lift, then rise up and toward the viewer */
+  transition: transform 1s cubic-bezier(0.5, 0, 0.2, 1) 0.4s, box-shadow 1s ease 0.4s;
 }
-.is-opening .env-card { transform: translateY(-24%) scale(1.04); }
+.is-opening .env-card { transform: translateY(-62%) scale(1.16); box-shadow: 0 40px 80px -30px rgba(45,30,34,0.7); }
 .env-eyebrow { font-size: 0.6rem; letter-spacing: 0.34em; text-transform: uppercase; color: var(--gold); }
 .env-flourish { width: 130px; color: var(--gold-light); margin: 0.3rem 0; }
 .env-names { font-family: var(--script); color: var(--dusty-deep); font-size: 2.2rem; font-weight: 400; line-height: 1.2; }

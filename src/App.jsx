@@ -24,7 +24,9 @@ export default function App() {
 
   return (
     <>
-      {!opened && <Envelope onOpen={() => setOpened(true)} />}
+      {/* Envelope stays mounted through its own opening animation, then
+          removes itself. onOpen just reveals/unlocks the site behind it. */}
+      <Envelope onOpen={() => setOpened(true)} />
       <MusicToggle playSignal={opened} />
 
       <main className={`site ${opened ? "revealed" : ""}`}>
